@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Stargazer.Abp.ObjectStorage.Domain\Stargazer.Abp.ObjectStorage.Domain.csproj" />
+  </ItemGroup>
+</Project>
