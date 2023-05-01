@@ -6,11 +6,18 @@
 
   <ItemGroup>
     <PackageReference Include="Lemon.Common" Version="1.2.1" />
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="7.0.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="7.1.1" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Stargazer.Abp.ObjectStorage.Domain</PackageId>
+    <Authors>huangmingji</Authors>
+    <Company>Stargazer</Company>
+    <PackageDescription>一个基于ABP的对象存储模块</PackageDescription>
+    <RepositoryUrl>https://github.com/huangmingji/Stargazer.Abp.ObjectStorage</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
