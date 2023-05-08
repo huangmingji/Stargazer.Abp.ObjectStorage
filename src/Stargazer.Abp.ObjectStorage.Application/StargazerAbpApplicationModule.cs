@@ -2,7 +2,6 @@ using System.IO;
 using Lemon.Common.Extend;
 using Stargazer.Abp.ObjectStorage.Application.Contracts;
 using Stargazer.Abp.ObjectStorage.Application.ObjectStorageContainers;
-using Stargazer.Abp.ObjectStorage.Domain.Shared.MultiTenancy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Application;
@@ -45,31 +44,24 @@ namespace Stargazer.Abp.ObjectStorage.Application
             {
                 options.Containers.Configure<ProfilePictureContainer>(container =>
                 {
-                    container.IsMultiTenant = false;
                     SetBlobStore(configuration, ref container);
                 }).Configure<ArticlePictureContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 }).Configure<OtherPictureContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 }).Configure<OtherObjectContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 }).Configure<MediaContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 }).Configure<DownloadContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 }).Configure<OfficeContainer>(container =>
                 {
-                    container.IsMultiTenant = MultiTenancyConsts.IsEnabled;
                     SetBlobStore(configuration, ref container);
                 });
             });

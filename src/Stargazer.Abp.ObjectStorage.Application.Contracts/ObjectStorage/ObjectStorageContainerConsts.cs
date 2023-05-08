@@ -1,4 +1,4 @@
-namespace Stargazer.Abp.ObjectStorage.Domain.Shared.ObjectStorage
+namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage
 {
     public static class ObjectStorageContainerConsts
     {

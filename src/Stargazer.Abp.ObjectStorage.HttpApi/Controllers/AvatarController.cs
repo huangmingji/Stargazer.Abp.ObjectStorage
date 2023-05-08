@@ -18,16 +18,13 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
     public class AvatarController : AbpController
     {
         private readonly IProfilePictureService _profilePictureService;
-        private readonly IObjectDataService _objectDataService;
         private readonly IConfiguration _configuration;
 
         public AvatarController(
             IProfilePictureService profilePictureService,
-            IObjectDataService objectDataService,
             IConfiguration configuration)
         {
             _profilePictureService = profilePictureService;
-            _objectDataService = objectDataService;
             _configuration = configuration;
         }
 
@@ -36,7 +33,7 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         public async Task<UploadResponseDto> UpdateAvatarAsync()
         {
             var input = new UploadFileInfo(Request.Form.Files.First());
-            var extensions = _configuration.GetSection("BlobStore:Avatar:FileExtension").Value.Split(",");
+            var extensions = _configuration.GetSection("BlobStore:Avatar:FileExtension").Value?.Split(",")??new string[] { };
             var maxSize = _configuration.GetSection("BlobStore:Avatar:MaxSize").Value.ToInt();
             if (!extensions.Contains(input.FileExtension))
             {
@@ -47,20 +44,10 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
             {
                 throw new UserFriendlyException(string.Format("图片文件大小不能超过{0}M", maxSize / 1024 / 1024));
             }
-
-            await _objectDataService.CreateAsync(new UpdateObjectDataDto()
-            {
-                FileType = input.FileType,
-                FileExtension = input.FileExtension,
-                FileHash = input.FileHash,
-                FileSize = input.FileSize,
-                FilePath = input.FileHash
-            });
-
-            await _profilePictureService.SaveAsync(CurrentUser.Id.ToString(), input.FileBytes);
+            await _profilePictureService.SaveAsync(CurrentUser.Id?.ToString()??Guid.NewGuid().ToString(), input.FileBytes);
             return new UploadResponseDto
             {
-                FileUrl = $"avatar/{CurrentUser.Id}"
+                Location = $"avatar/{CurrentUser.Id}"
             };
         }
 
@@ -68,29 +55,7 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         public async Task<IActionResult> GetAvatarAsync(Guid userId)
         {
             var picture = await _profilePictureService.GetAsync(userId.ToString());
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (var t in picture)
-            {
-                stringBuilder.Append(t.ToString("x2"));
-            }
-            string fileHash = stringBuilder.ToString().Replace("-", "");
             string contentType = "application/octet-stream";
-            var objectData = await _objectDataService.GetAsync(fileHash);
-            switch (objectData.ObjectExtension)
-            {
-                case ".jpg":
-                    contentType = "image/jpeg";
-                    break;
-                case ".png":
-                    contentType = "image/png";
-                    break;
-                case ".jpeg":
-                    contentType = "image/jpeg";
-                    break;
-                case ".gif":
-                    contentType = "image/gif";
-                    break;
-            }
             return File(picture, contentType);
         }
     }

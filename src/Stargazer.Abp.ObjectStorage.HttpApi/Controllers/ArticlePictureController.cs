@@ -18,16 +18,13 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
     public class ArticlePictureController : AbpController
     {
         private readonly IArticlePictureService _articlePictureService;
-        private readonly IObjectDataService _objectDataService;
         private readonly IConfiguration _configuration;
 
         public ArticlePictureController(
             IArticlePictureService articlePictureService,
-            IObjectDataService objectDataService,
             IConfiguration configuration)
 		{
             _articlePictureService = articlePictureService;
-            _objectDataService = objectDataService;
             _configuration = configuration;
 		}
 
@@ -36,7 +33,7 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         public async Task<UploadResponseDto> UpdatePictureAsync()
         {
             var input = new UploadFileInfo(Request.Form.Files.First());
-            var extensions = _configuration.GetSection("BlobStore:ArticlePicture:FileExtension").Value.Split(",");
+            var extensions = _configuration.GetSection("BlobStore:ArticlePicture:FileExtension").Value?.Split(",")?? new string[] { };
             var maxSize = _configuration.GetSection("BlobStore:ArticlePicture:MaxSize").Value.ToInt();
             if (!extensions.Contains(input.FileExtension))
             {
@@ -47,20 +44,11 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
             {
                 throw new UserFriendlyException(string.Format("图片文件大小不能超过{0}M", maxSize/1024/1024));
             }
-
-            var data =await _objectDataService.CreateAsync(new UpdateObjectDataDto()
-            {
-                FileType = input.FileType,
-                FileExtension = input.FileExtension,
-                FileHash = input.FileHash,
-                FileSize = input.FileSize,
-                FilePath = input.FileHash
-            });
-
-            await _articlePictureService.SaveAsync(data.Id.ToString(), input.FileBytes);
+            string fileName = Guid.NewGuid().ToString();
+            await _articlePictureService.SaveAsync(fileName, input.FileBytes);
             return new UploadResponseDto
             {
-                FileUrl = $"article/picture/{data.Id}"
+                Location = $"article/picture/{fileName}"
             };
         }
 
@@ -69,22 +57,6 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         {
             var picture = await _articlePictureService.GetAsync(id.ToString());
             string contentType = "application/octet-stream";
-            var objectData = await _objectDataService.GetAsync(id);
-            switch (objectData.ObjectExtension)
-            {
-                case ".jpg":
-                    contentType = "image/jpeg";
-                    break;
-                case ".png":
-                    contentType = "image/png";
-                    break;
-                case ".jpeg":
-                    contentType = "image/jpeg";
-                    break;
-                case ".gif":
-                    contentType = "image/gif";
-                    break;
-            }
             return File(picture, contentType);
         }
     }
