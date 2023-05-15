@@ -33,21 +33,22 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         public async Task<UploadResponseDto> UpdateAvatarAsync()
         {
             var input = new UploadFileInfo(Request.Form.Files.First());
-            var extensions = _configuration.GetSection("BlobStore:Avatar:FileExtension").Value?.Split(",")??new string[] { };
+            var extensions = _configuration.GetSection("BlobStore:Avatar:FileExtension").Value?.Split(",") ?? new string[] { };
             var maxSize = _configuration.GetSection("BlobStore:Avatar:MaxSize").Value.ToInt();
             if (!extensions.Contains(input.FileExtension))
             {
-                throw new UserFriendlyException("请选择图片文件");
+                throw new FileExtensionException("请选择图片文件");
             }
 
             if (input.FileSize > maxSize)
             {
-                throw new UserFriendlyException(string.Format("图片文件大小不能超过{0}M", maxSize / 1024 / 1024));
+                throw new FileSizeException(string.Format("图片文件大小不能超过{0}M", maxSize / 1024 / 1024));
             }
-            await _profilePictureService.SaveAsync(CurrentUser.Id?.ToString()??Guid.NewGuid().ToString(), input.FileBytes);
+            string fileName = CurrentUser.Id?.ToString() ?? Guid.NewGuid().ToString();
+            await _profilePictureService.SaveAsync(fileName, input.FileBytes);
             return new UploadResponseDto
             {
-                Location = $"avatar/{CurrentUser.Id}"
+                Location = $"avatar/{fileName}"
             };
         }
 

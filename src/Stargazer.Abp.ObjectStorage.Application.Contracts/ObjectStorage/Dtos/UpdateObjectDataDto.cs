@@ -10,8 +10,8 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
         /// <summary>
         /// 文件扩展名
         /// </summary>
-        public string FileExtension { get; set; }
-        
+        public string FileExtension { get; set; } = "";
+
         /// <summary>
         /// 文件的hash值
         /// </summary>

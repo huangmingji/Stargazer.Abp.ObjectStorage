@@ -36,15 +36,15 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
             var maxSize = _configuration.GetSection("BlobStore:Picture:MaxSize").Value.ToInt();
             if (!extensions.Contains(input.FileExtension))
             {
-                throw new UserFriendlyException("请选择图片文件");
+                throw new FileExtensionException("请选择图片文件");
             }
 
             if (input.FileSize > maxSize)
             {
-                throw new UserFriendlyException(string.Format("图片文件大小不能超过{0}M", maxSize / 1024 / 1024));
+                throw new FileSizeException(string.Format("图片文件大小不能超过{0}M", maxSize / 1024 / 1024));
             }
 
-            string fileName = Guid.NewGuid().ToString();
+            string fileName = Guid.NewGuid().ToString("N").ToLower() + input.FileExtension;
             await _otherPictureService.SaveAsync(fileName, input.FileBytes);
             return new UploadResponseDto
             {
@@ -52,10 +52,10 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
             };
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPictureAsync(Guid id)
+        [HttpGet("{fileName}")]
+        public async Task<IActionResult> GetPictureAsync(string fileName)
         {
-            var picture = await _otherPictureService.GetAsync(id.ToString());
+            var picture = await _otherPictureService.GetAsync(fileName);
             string contentType = "application/octet-stream";
             return File(picture, contentType);
         }
