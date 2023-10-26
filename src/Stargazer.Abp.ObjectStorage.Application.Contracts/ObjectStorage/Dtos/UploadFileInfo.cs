@@ -1,6 +1,8 @@
 using System.IO;
 using Lemon.Common.File;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
 {
@@ -11,9 +13,7 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
             long fileSize = fileStream.Length;
             string hash = fileStream.GetFileHashMd5();
 
-            byte[] fileBytes = new byte [fileStream.Length];
-            fileStream.Read(fileBytes, 0, fileBytes.Length);
-            fileStream.Seek(0, SeekOrigin.Begin);
+            byte[] fileBytes = fileStream.GetAllBytes();
             
             FileName = fileName.Replace(extension, "");;
             FileExtension = extension;
@@ -22,6 +22,26 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
             FileSize = fileSize;
             FileBytes = fileBytes;
             FileType = contentType;
+        }
+
+        public UploadFileInfo(IBrowserFile file)
+        {
+            string extension = Path.GetExtension(file.Name)?.ToLower() ?? "";
+
+            long fileSize = file.Size;
+            Stream stream = file.OpenReadStream();
+
+            string hash = stream.GetFileHashMd5();
+
+            byte[] fileBytes = stream.GetAllBytes();
+
+            FileName = file.Name.Replace(extension, "");
+            FileExtension = extension;
+            FilePath = hash;
+            FileHash = hash;
+            FileSize = fileSize;
+            FileBytes = fileBytes;
+            FileType = file.ContentType;
         }
 
         public UploadFileInfo(IFormFile formFile)
@@ -33,9 +53,7 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
 
             string hash = stream.GetFileHashMd5();
 
-            byte[] fileBytes = new byte [stream.Length];
-            stream.Read(fileBytes, 0, fileBytes.Length);
-            stream.Seek(0, SeekOrigin.Begin);
+            byte[] fileBytes = stream.GetAllBytes();
             
             FileName = formFile.FileName.Replace(extension, "");
             FileExtension = extension;
