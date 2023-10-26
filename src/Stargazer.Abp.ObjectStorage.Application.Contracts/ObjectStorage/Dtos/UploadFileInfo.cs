@@ -1,8 +1,6 @@
-using System.IO;
 using Lemon.Common.File;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
 {
@@ -33,7 +31,8 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
 
             string hash = stream.GetFileHashMd5();
 
-            byte[] fileBytes = stream.GetAllBytes();
+            byte[] bytes = stream.GetAllBytesAsync().Result;
+            byte[] fileBytes = bytes;
 
             FileName = file.Name.Replace(extension, "");
             FileExtension = extension;
