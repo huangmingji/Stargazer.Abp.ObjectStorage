@@ -9,7 +9,7 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
         public UploadFileInfo(FileStream fileStream, string fileName, string extension, string contentType = "")
         {
             long fileSize = fileStream.Length;
-            string hash = fileStream.GetFileHashMd5();
+            string hash = fileStream.GetFileHashMd5Async().Result;
 
             byte[] fileBytes = fileStream.GetAllBytes();
             
@@ -29,7 +29,7 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
             long fileSize = file.Size;
             Stream stream = file.OpenReadStream();
 
-            string hash = stream.GetFileHashMd5();
+            string hash = stream.GetFileHashMd5Async().Result;
 
             byte[] bytes = stream.GetAllBytesAsync().Result;
             byte[] fileBytes = bytes;
@@ -50,7 +50,7 @@ namespace Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos
             long fileSize = formFile.Length;
             Stream stream = formFile.OpenReadStream();
 
-            string hash = stream.GetFileHashMd5();
+            string hash = stream.GetFileHashMd5Async().Result;
 
             byte[] fileBytes = stream.GetAllBytes();
             
