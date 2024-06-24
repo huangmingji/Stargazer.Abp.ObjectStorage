@@ -5,17 +5,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.AutoMapper" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.BlobStoring" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.BlobStoring.Aliyun" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.BlobStoring.Minio" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.Caching" Version="7.4.2" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="7.4.2" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Aliyun" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Minio" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.Caching" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="8.1.4" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Stargazer.Abp.ObjectStorage.Application</PackageId>
