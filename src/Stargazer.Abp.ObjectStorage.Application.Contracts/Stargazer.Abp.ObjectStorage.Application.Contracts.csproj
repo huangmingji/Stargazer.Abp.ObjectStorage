@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="8.1.4" />
-    <PackageReference Include="Volo.Abp.FluentValidation" Version="8.1.4" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="8.3.1" />
     <PackageReference Include="Lemon.Common" Version="1.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
   </ItemGroup>
 
 </Project>
