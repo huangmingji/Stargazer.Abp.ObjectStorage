@@ -1,5 +1,5 @@
 using System.IO;
-using Lemon.Common.Extend;
+using Stargazer.Common.Extend;
 using Stargazer.Abp.ObjectStorage.Application.Contracts;
 using Stargazer.Abp.ObjectStorage.Application.ObjectStorageContainers;
 using Microsoft.Extensions.Configuration;

@@ -9,7 +9,7 @@ using Volo.Abp.AspNetCore.Mvc;
 using Stargazer.Abp.ObjectStorage.Application.Contracts.ObjectStorage.Dtos;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using Lemon.Common.Extend;
+using Stargazer.Common.Extend;
 
 namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
 {
