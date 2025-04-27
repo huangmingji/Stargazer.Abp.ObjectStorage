@@ -34,7 +34,7 @@ namespace Stargazer.Abp.ObjectStorage.HttpApi.Controllers
         {
             var input = new UploadFileInfo(Request.Form.Files.First());
             var extensions = _configuration.GetSection("BlobStore:ArticlePicture:FileExtension").Value?.Split(",")?? new string[] { };
-            var maxSize = _configuration.GetSection("BlobStore:ArticlePicture:MaxSize").Value.ToInt();
+            var maxSize = _configuration.GetSection("BlobStore:ArticlePicture:MaxSize").Value?.ToInt();
             if (!extensions.Contains(input.FileExtension))
             {
                 throw new FileExtensionException("请选择图片文件");
